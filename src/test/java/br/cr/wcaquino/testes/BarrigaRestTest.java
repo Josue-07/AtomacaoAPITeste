@@ -104,16 +104,7 @@ public class BarrigaRestTest extends BaseTests {
 	@Test
 	public void devoInserirTransaçõesComSucesso() {
 		
-		Movimentacoes mov = new Movimentacoes();
-		
-		mov.setData_transacao("10/07/2000");
-		mov.setData_pagamento("13/07/2010");
-		mov.setDescricao("movimentando conta");
-		mov.setConta_id(1245782);
-		mov.setEnvolvido("Fabio Massalino");
-		mov.setStatus(true);
-		mov.setValor(100f);
-		mov.setTipo("REC");
+		Movimentacoes mov = getMovimentacaoConta();
 		
 		given()
 			.header("Authorization", "JWT " + token)
@@ -121,7 +112,7 @@ public class BarrigaRestTest extends BaseTests {
 		.when()
 			.post("/transacoes")
 		.then()
-			//.log().all()
+			.log().all()
 			.statusCode(201)
 			
 		;
@@ -152,27 +143,82 @@ public class BarrigaRestTest extends BaseTests {
 	}
 	@Test
 	public void naoDevoCadastrarMovimentacaoFutura() {
+		Movimentacoes mov = getMovimentacaoConta();
+		
+		mov.setData_transacao("20/07/2022");
+		
+		given()
+			.header("Authorization", "JWT " + token)
+			.body(mov)
+		.when()
+			.post("/transacoes")
+		.then()
+			.log().all()
+			.statusCode(400)
+			.body("msg", hasItem("Data da Movimentação deve ser menor ou igual à data atual"))
+		
+		;
+	}
+	
+	@Test
+	public void naoDeveRemoverContaEmMovimentacao() {
+		given()
+			.header("Authorization", "JWT " + token)
+
+		.when()
+			.delete("/contas/1253077")
+		.then()
+			.log().all()
+			.statusCode(500)
+			.body("constraint", equalTo("transacoes_conta_id_foreign"))
+			
+		
+		;
+	}
+	
+	@Test
+	public void deveCalcularOSaldoDasContas() {
+		given()
+			.header("Authorization", "JWT " + token)
+
+		.when()
+			.get("/saldo")
+		.then()
+			.log().all()
+			.statusCode(200)
+			.body("find{it.conta_id == 1253077}.saldo", is("200.00"))
+		
+		;
+	}
+	@Test
+	public void deveRemoverMovimentacao() {
+		given()
+			.header("Authorization", "JWT " + token)
+
+		.when()
+			.delete("/transacoes/1192430")
+		.then()
+			.log().all()
+			.statusCode(204)
+			
+		
+		;
+	}
+	
+	
+	private Movimentacoes getMovimentacaoConta() {
+		
 		Movimentacoes mov = new Movimentacoes();
 		
-		mov.setData_transacao("16/07/2022");
-		mov.setData_pagamento("19/07/2022");
-		mov.setDescricao("movimentando conta");
-		mov.setConta_id(1245782);
-		mov.setEnvolvido("Jonas");
+		mov.setData_transacao("15/07/2022");
+		mov.setData_pagamento("16/07/2022");
+		mov.setDescricao("movimentando conta 2");
+		mov.setConta_id(1253077);
+		mov.setEnvolvido("Fabio Massalino");
 		mov.setStatus(true);
 		mov.setValor(100f);
 		mov.setTipo("REC");
 		
-		
-		given()
-			.header("Authentication", "JWT " + token)
-			.body(mov)
-		.when()
-			.post("/trasacoes")
-		.then()
-			.log().all()
-			.statusCode(400)
-		
-		;
+		return mov;
 	}
 }

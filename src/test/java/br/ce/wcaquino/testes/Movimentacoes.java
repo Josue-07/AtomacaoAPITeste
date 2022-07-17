@@ -1,4 +1,4 @@
-package br.cr.wcaquino.testes;
+package br.ce.wcaquino.testes;
 
 public class Movimentacoes {
 

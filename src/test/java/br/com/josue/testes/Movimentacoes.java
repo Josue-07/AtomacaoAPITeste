@@ -1,4 +1,4 @@
-package br.ce.wcaquino.testes;
+package br.com.josue.testes;
 
 public class Movimentacoes {
 

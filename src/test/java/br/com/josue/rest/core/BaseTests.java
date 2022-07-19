@@ -1,4 +1,4 @@
-package br.ce.wcaquino.rest.core;
+package br.com.josue.rest.core;
 
 import org.hamcrest.Matchers;
 import org.junit.BeforeClass;

@@ -1,4 +1,4 @@
-package br.ce.wcaquino.utils;
+package br.com.josue.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package br.ce.wcaquino.testes;
+package br.com.josue.testes;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -6,14 +6,13 @@ import static org.hamcrest.Matchers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import br.ce.wcaquino.rest.core.BaseTests;
-import br.ce.wcaquino.utils.DataUtils;
+import br.com.josue.rest.core.BaseTests;
+import br.com.josue.utils.DataUtils;
 import io.restassured.RestAssured;
 import io.restassured.specification.FilterableRequestSpecification;
 
